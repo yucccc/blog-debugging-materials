@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>标题</title>
+</head>
+<body>
+    <p> bind的作用是什么呢？</p>
+    bind 方法创建一个新的函数  在bind()被调用时 这个新函数的this被指定为bind()的第一个参数。 而其余参数将作为新函数的参数 供调用时使用
+
+    
+    <script src="./bind.js"></script>
+    <script>
+        const module = {
+          x: 42,
+          getX(v, d) {
+            return `${this.x}----${v}----${d}`
+          },
+        }
+        const m = module.getX.mybind1(module, 'bind1', 'bind2')
+        console.warn(m(123))
+        const m2 = module.getX.bind(module, 'bind1', 'bind2')
+        console.warn(m2(123))
+
+        function test(v, b) {
+          console.log(v, b)
+        }
+
+        const m3 = test.mybind2(test, 'bind1', 'bind2')
+        const m4 = new m3()
+        console.warn('m4', m4)
+    </script>
+</body>
+</html>
