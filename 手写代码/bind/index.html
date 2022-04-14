@@ -31,6 +31,9 @@
         const m3 = test.mybind2(test, 'bind1', 'bind2')
         const m4 = new m3()
         console.warn('m4', m4)
+        const m5 = test.bind(test, 'bind1', 'bind2')
+        const m6 = new m5()
+        console.info('m6', m6)
     </script>
 </body>
 </html>
