@@ -1,6 +1,10 @@
 {
     "extends": "@antfu",
     "rules": {
-        "no-console": "off"
+        "no-console": "off",
+        "eol-last": "off"
+    },
+    "env": {
+        "jest": true
     }
 }

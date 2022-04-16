@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+    import MyPromise from './promise.js'
+    const p = new Promise((resolve) => {
+      resolve('成功Promise')
+    })
+    // p.then((res) => {
+    //   console.info(res, 'then1')
+    // })
+    const mp = new MyPromise((resolve, reject) => {
+      setTimeout(() => reject(new Error('MyPromise')), 1000)
+    })
+    mp.then((res) => {
+      console.info(res, 'then1')
+    })
+
+    mp.then((res) => {
+      console.info(res, 'then2')
+    })
+    // 最后的会覆盖前面
+    mp.then((res) => {
+      console.info(res, 'then3')
+    }, (err) => {
+      console.error(err.message, 'err3')
+    }).then((res) => {
+      console.info(res, 'then3-2')
+    })
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+      console.info('window.onerror', msg, url, lineNo, columnNo, error)
+    }
+    setTimeout(() => {
+      console.log(b)
+    }, 1000)
+
+    window.addEventListener('unhandledrejection', (event) => {
+      console.info('unhandledrejection', event)
+    })
+  </script>
+</body>
+
+</html>
