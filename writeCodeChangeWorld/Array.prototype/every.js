@@ -7,6 +7,5 @@ export const every = function(array, callback, thisArg) {
     if (!flag)
       break
   }
-
   return flag
 }
