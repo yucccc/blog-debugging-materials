@@ -7,7 +7,13 @@
 
 可以改造为
 
-compose(f3, f2, f1)
 
-注意：这里函数式代码是从右到左执行的 从 f1执行到f3
+compose(f1, f2, f3)
 
+composeRight(f3, f2, f1)
+
+注意：这里composeRight函数式代码是从右到左执行的 从 f1执行到f3
+
+
+
+ 

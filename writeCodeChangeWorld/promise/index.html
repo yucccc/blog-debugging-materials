@@ -11,40 +11,52 @@
 <body>
   <script type="module">
     import MyPromise from './promise.js'
-    const p = new Promise((resolve) => {
-      resolve('成功Promise')
-    })
+
+    // const p = new Promise((resolve) => {
+    //   resolve('成功Promise')
+    // })
+
     // p.then((res) => {
     //   console.info(res, 'then1')
     // })
     const mp = new MyPromise((resolve, reject) => {
-      setTimeout(() => reject(new Error('MyPromise')), 1000)
-    })
-    mp.then((res) => {
-      console.info(res, 'then1')
-    })
+      // setTimeout(resolve, 1000, '成功MyPromise')
+      // 返回普通值
+      resolve('成功MyPromise')
+      // 返回promise对象
+      // resolve(new MyPromise((resolve) => {
+      //   resolve('返回的是Promise对象')
+      // }))
 
-    mp.then((res) => {
+      // reject('失败')
+    }).then((res) => {
       console.info(res, 'then2')
     })
-    // 最后的会覆盖前面
-    mp.then((res) => {
-      console.info(res, 'then3')
-    }, (err) => {
-      console.error(err.message, 'err3')
-    }).then((res) => {
-      console.info(res, 'then3-2')
-    })
-    window.onerror = function(msg, url, lineNo, columnNo, error) {
-      console.info('window.onerror', msg, url, lineNo, columnNo, error)
-    }
-    setTimeout(() => {
-      console.log(b)
-    }, 1000)
+    // const mp2 = mp.then((res) => {
+    //   return mp2
+    // }).then((res) => {
+    //   console.log(res.message, 'then2')
+    // }, (err) => {
+    //   console.log(err, '---')
+    // })
 
-    window.addEventListener('unhandledrejection', (event) => {
-      console.info('unhandledrejection', event)
-    })
+    // window.onerror = function (msg, url, lineNo, columnNo, error) {
+    //   console.info('window.onerror', msg, url, lineNo, columnNo, error)
+    // }
+    // // setTimeout(() => {
+    // //   console.log(b)
+    // // }, 1000)
+
+    // window.addEventListener('unhandledrejection', (event) => {
+    //   console.info('unhandledrejection', event)
+    // })
+
+    // const p1 = new Promise((resolve) => {
+    //   resolve('成功Promise')
+    // })
+    // const p2 = p1.then((res) => {
+    //   return p2
+    // })
   </script>
 </body>
 
