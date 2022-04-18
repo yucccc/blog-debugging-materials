@@ -79,9 +79,36 @@ class MyPromise {
   catch() {
   }
 
-  // static all(array) {
-  //   return new MyPromise((resolve, reject) => null)
-  // }
+  /**
+   * 接收一个数组 返回一组promise 如果其中有一个rejected 那么就返回onRejected的值
+   *
+   * @param {*} array
+   * @returns
+   */
+  static all(array) {
+    // 返回一个Promise数组
+    const result = []
+    let _index = 0
+    return new MyPromise((resolve, reject) => {
+      const addItem = function(index, value) {
+        result[index] = value
+        if (++_index === array.length)
+          resolve(result)
+      }
+      for (let index = 0; index < array.length; index++) {
+        const current = array[index]
+        if (current instanceof MyPromise) {
+          current.then(value => addItem(index, value), (reason) => {
+            reject(reason)
+          })
+        }
+        else {
+          // 普通对象
+          addItem(index, current)
+        }
+      }
+    })
+  }
 }
 
 // 解析promise
