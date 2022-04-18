@@ -76,7 +76,15 @@ class MyPromise {
     return _mp2
   }
 
-  catch() {
+  finally(callback) {
+    // 如何得到状态
+    // this.then(() => {
+
+    // },)
+  }
+
+  catch(failCallback) {
+    return this.then(undefined, failCallback)
   }
 
   /**
@@ -108,6 +116,11 @@ class MyPromise {
         }
       }
     })
+  }
+
+  static resolve(value) {
+    if (value instanceof MyPromise) return value
+    return new MyPromise(resolve => resolve(value))
   }
 }
 
