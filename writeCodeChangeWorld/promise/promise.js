@@ -78,9 +78,11 @@ class MyPromise {
 
   finally(callback) {
     // 如何得到状态
-    // this.then(() => {
-
-    // },)
+    this.then((value) => {
+      return MyPromise.resolve(callback()).then(() => value)
+    }, (reason) => {
+      return MyPromise.resolve(callback()).then(() => { throw reason })
+    })
   }
 
   catch(failCallback) {
