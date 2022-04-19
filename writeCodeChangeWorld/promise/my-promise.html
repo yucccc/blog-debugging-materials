@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script type="module">
+        // import MyPromise from './my-promise-2.js'
+        // import MyPromise from './my-promise-000.js'
+        import MyPromise from './my-promise.js'
+
+        const promise3 = new MyPromise((resolve) => {
+          resolve('promise2')
+        })
+        const err = function() {
+          return new MyPromise((resolve, reject) => {
+            reject('promise3')
+          })
+        }
+        MyPromise.any(['213123', '3231321', err()]).then((res) => {
+          console.log(res, 'any')
+        }).catch((err) => {
+          console.info(err.message, '===报错')
+        })
+    </script>
+</body>
+
+</html>
