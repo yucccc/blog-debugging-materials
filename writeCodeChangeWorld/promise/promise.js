@@ -95,7 +95,7 @@ class MyPromise {
    * @param {*} array
    * @returns
    */
-  static all(array) {
+  static all(iterable) {
     // 返回一个Promise数组
     const result = []
     let _index = 0
@@ -105,9 +105,9 @@ class MyPromise {
         if (++_index === array.length)
           resolve(result)
       }
-      for (let index = 0; index < array.length; index++) {
-        const current = array[index]
-        if (current instanceof MyPromise) {
+      for (let index = 0; index < iterable.length; index++) {
+        const current = iterable[index]
+        if (isPromise(current)) {
           current.then(value => addItem(index, value), (reason) => {
             reject(reason)
           })
@@ -124,13 +124,42 @@ class MyPromise {
     if (value instanceof MyPromise) return value
     return new MyPromise(resolve => resolve(value))
   }
+
+  /**
+   * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
+   * 只要其中的一个 promise 成功，就返回那个已经成功的 promise
+   * 如果全部都失败了 就返回一个失败的 promise 和AggregateError类型的实例，它是 Error 的一个子类，用于把单一的错误集合在一起。
+   */
+  static any(iterable) {
+    return new MyPromise((resolve, reject) => {
+      let count = 0
+      for (let index = 0; index < iterable.length; index++) {
+        const current = iterable[index]
+        if (isPromise(current)) {
+          current.then(resolve, (reason) => {
+            if (++count === iterable.length) {
+              console.info(count, iterable.length)
+              reject(new AggregateError(reason, 'Promises rejected.'))
+            }
+          })
+        }
+        else {
+          resolve(current)
+        }
+      }
+    })
+  }
+
+  static allSettled(iterable) {
+
+  }
 }
 
 // 解析promise
 function resolvePromise(_mp2, v, resolve, reject) {
   // 自己调用自己
   if (_mp2 === v)
-    return reject(new TypeError('(in promise) TypeError: Chaining cycle detected for promise #<Promise>'))
+    return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
 
   if (v instanceof MyPromise) {
     v.then(resolve, reject)
@@ -149,6 +178,10 @@ function resolveWrapper(_mp2, fn, fnParams, resolve, reject) {
   catch (error) {
     reject(error)
   }
+}
+// 是否Promise的实例
+function isPromise(obj) {
+  return obj instanceof MyPromise
 }
 
 export default MyPromise
