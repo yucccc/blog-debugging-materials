@@ -3,9 +3,13 @@ const FULFILLED = 'fulfilled'
 const REJECTED = 'rejected'
 
 class MyPromise {
+  // 当天状态
   status = PENDING
+  // 成功的值
   value = undefined
+  // 失败的原因
   reason = undefined
+  //
   successCallback = []
   failCallback = []
   constructor(executor) {
@@ -20,23 +24,19 @@ class MyPromise {
 
   // 用箭头函数 绑定上下文this
   resolve = (value) => {
-    if (this.status !== PENDING) return
+    if (this.status !== PENDING) { return }
     this.status = FULFILLED
     this.value = value
-    // 判断成功的回调是否存在 存在则调用
-    // this.successCallback && this.successCallback(value)
-    while (this.successCallback.length)
-      this.successCallback.shift()()
+    while (this.successCallback.length) { this.successCallback.shift()() }
   }
 
   reject = (reason) => {
-    if (this.status !== PENDING) return
+    if (this.status !== PENDING) { return }
 
     this.status = REJECTED
     this.reason = reason
 
-    // this.failCallback && this.failCallback(reason)
-    while (this.failCallback.length) this.failCallback.shift()()
+    while (this.failCallback.length) { this.failCallback.shift()() }
   }
 
   then(successCallback = value => value, failCallback = (reason) => { throw reason }) {
@@ -102,8 +102,7 @@ class MyPromise {
     return new MyPromise((resolve, reject) => {
       const addItem = function(index, value) {
         result[index] = value
-        if (++_index === array.length)
-          resolve(result)
+        if (++_index === array.length) { resolve(result) }
       }
       for (let index = 0; index < iterable.length; index++) {
         const current = iterable[index]
@@ -112,16 +111,16 @@ class MyPromise {
             reject(reason)
           })
         }
-        else {
-          // 普通对象
-          addItem(index, current)
-        }
+
+        else
+        // 普通对象
+        { addItem(index, current) }
       }
     })
   }
 
   static resolve(value) {
-    if (value instanceof MyPromise) return value
+    if (value instanceof MyPromise) { return value }
     return new MyPromise(resolve => resolve(value))
   }
 
@@ -138,14 +137,13 @@ class MyPromise {
         const current = iterable[index]
         if (isPromise(current)) {
           current.then(resolve, (reason) => {
-            if (++count === iterable.length)
-              return reject(new AggregateError(reason, 'Promises rejected.'))
+            if (++count === iterable.length) { return reject(new AggregateError(reason, 'Promises rejected.')) }
           })
         }
-        else {
-          // 需要return终止循环
-          return resolve(current)
-        }
+
+        else
+        // 需要return终止循环
+        { return resolve(current) }
       }
     })
   }
@@ -159,8 +157,7 @@ class MyPromise {
     let count = 0
     return new MyPromise((resolve, reject) => {
       const addItem = function() {
-        if (++count === iterable.length)
-          resolve(result)
+        if (++count === iterable.length) { resolve(result) }
       }
       iterable.forEach((current, index) => {
         if (isPromise(current)) {
@@ -190,10 +187,8 @@ class MyPromise {
   static race(iterable) {
     return new MyPromise((resolve, reject) => {
       for (const current of iterable) {
-        if (isPromise(current))
-          current.then(resolve, reject)
-        else
-          resolve(current)
+        if (isPromise(current)) { current.then(resolve, reject) }
+        else { resolve(current) }
       }
     })
   }
@@ -202,12 +197,9 @@ class MyPromise {
 // 解析promise
 function resolvePromise(_mp2, v, resolve, reject) {
   // 自己调用自己
-  if (_mp2 === v)
-    return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
+  if (_mp2 === v) { return reject(new TypeError('Chaining cycle detected for promise #<Promise>')) }
 
-  if (v instanceof MyPromise) {
-    v.then(resolve, reject)
-  }
+  if (v instanceof MyPromise) { v.then(resolve, reject) }
   else {
     // 普通值
     resolve(v)
