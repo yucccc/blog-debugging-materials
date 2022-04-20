@@ -9,7 +9,6 @@ class MyPromise {
   value = undefined
   // 失败的原因
   reason = undefined
-  //
   successCallback = []
   failCallback = []
   constructor(executor) {
@@ -102,7 +101,9 @@ class MyPromise {
     return new MyPromise((resolve, reject) => {
       const addItem = function(index, value) {
         result[index] = value
-        if (++_index === array.length) { resolve(result) }
+        if (++_index === iterable.length) {
+          resolve(result)
+        }
       }
       for (let index = 0; index < iterable.length; index++) {
         const current = iterable[index]
@@ -111,10 +112,10 @@ class MyPromise {
             reject(reason)
           })
         }
-
-        else
         // 普通对象
-        { addItem(index, current) }
+        else {
+          addItem(index, current)
+        }
       }
     })
   }
@@ -155,7 +156,7 @@ class MyPromise {
   static allSettled(iterable) {
     const result = []
     let count = 0
-    return new MyPromise((resolve, reject) => {
+    return new MyPromise((resolve) => {
       const addItem = function() {
         if (++count === iterable.length) { resolve(result) }
       }
@@ -197,9 +198,12 @@ class MyPromise {
 // 解析promise
 function resolvePromise(_mp2, v, resolve, reject) {
   // 自己调用自己
-  if (_mp2 === v) { return reject(new TypeError('Chaining cycle detected for promise #<Promise>')) }
-
-  if (v instanceof MyPromise) { v.then(resolve, reject) }
+  if (_mp2 === v) {
+    return reject(new TypeError('Chaining cycle detected for promise #<Promise>'))
+  }
+  if (isPromise(v)) {
+    v.then(resolve, reject)
+  }
   else {
     // 普通值
     resolve(v)
