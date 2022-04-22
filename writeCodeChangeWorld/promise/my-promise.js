@@ -35,7 +35,9 @@ class MyPromise {
     this.status = REJECTED
     this.reason = reason
 
-    while (this.failCallback.length) { this.failCallback.shift()() }
+    while (this.failCallback.length) {
+      this.failCallback.shift()()
+    }
   }
 
   then(successCallback = value => value, failCallback = (reason) => { throw reason }) {
@@ -77,11 +79,7 @@ class MyPromise {
 
   finally(callback) {
     // 如何得到状态
-    this.then((value) => {
-      return MyPromise.resolve(callback()).then(() => value)
-    }, (reason) => {
-      return MyPromise.resolve(callback()).then(() => { throw reason })
-    })
+    return this.then(callback, callback)
   }
 
   catch(failCallback) {
@@ -141,10 +139,10 @@ class MyPromise {
             if (++count === iterable.length) { return reject(new AggregateError(reason, 'Promises rejected.')) }
           })
         }
-
-        else
         // 需要return终止循环
-        { return resolve(current) }
+        else {
+          return resolve(current)
+        }
       }
     })
   }
