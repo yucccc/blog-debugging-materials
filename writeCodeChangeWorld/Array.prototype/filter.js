@@ -3,8 +3,9 @@ export const filter = function(array, callback, thisArg) {
   const result = []
   for (let index = 0; index < array.length; index++) {
     const element = array[index]
-    if (callback.call(thisArg, element, index, array))
+    if (callback.call(thisArg, element, index, array)) {
       result.push(element)
+    }
   }
   return result
 }
