@@ -4,8 +4,7 @@ export const every = function(array, callback, thisArg) {
   let flag = true
   for (let index = 0; index < array.length; index++) {
     flag = callback.call(thisArg, array[index], index, array)
-    if (!flag)
-      break
+    if (!flag) { break }
   }
   return flag
 }

@@ -1,61 +1,118 @@
-// 1 实现 then 方法 得到返回结果
+const PENDING = 'pending'
+const FULFILLED = 'fulfilled'
+const REJECTED = 'rejected'
 
-export const PENDING = 'pending'
-export const FULFILLED = 'fulfilled'
-export const REJECTED = 'rejected'
-
-class MyPromise {
-  // 当前状态
+export class MyPromise {
   status = PENDING
-  // 成功返回值
-  value = undefined
-  // 失败返回原因
-  reason = undefined
-  constructor(executor) {
-    // 执行一下传递进来的函数 传入resolve reject
-    executor(this.resolve, this.reject)
+  value = undefined // 成功
+  reason = undefined //  失败原因
+  successCallback = [] // 异步成功回调
+  failCallback = [] // 异步失败回调
+  constructor(fn) {
+    try {
+      fn(this.resolve, this.reject)
+    }
+    catch (error) {
+      this.reject(error)
+    }
   }
 
   resolve = (value) => {
-    if (this.status !== PENDING) return
+    if (this.status !== PENDING) { return }
     this.status = FULFILLED
     this.value = value
+    while (this.successCallback.length) {
+      this.successCallback.shift()(value)
+    }
   }
 
   reject = (reason) => {
-    if (this.status !== PENDING) return
+    if (this.status !== PENDING) { return }
     this.status = REJECTED
     this.reason = reason
+    while (this.failCallback.length) {
+      this.failCallback.shift()(reason)
+    }
   }
 
-  // 给回调函数加上默认参数 解决后续传递空then 以及 用户未传递参数问题
-  then(successCallback = value => value, failCallback = (reason) => { throw reason }) {
-    // 返回一个新的Promise
+  then(
+    successCallback = value => value,
+    failCallback = (reason) => { throw reason },
+  ) {
     const mp2 = new MyPromise((resolve, reject) => {
-      // 成功
       if (this.status === FULFILLED) {
         setTimeout(() => {
-          const res = successCallback(this.value)
-          // 把执行完的值给到下一个
-          if (mp2 === res)
-            return reject(new TypeError('Chaining cycle detected for promise #<My Promise>'))
-          else
-            return resolve(res)
-        }, 0)
+          try {
+            const res = successCallback(this.value)
+            if (res === mp2) {
+              return new TypeError('Chaining cycle detected for promise #<Promise>')
+            }
+            if (isPromise(res)) {
+              res.then(resolve, reject)
+            }
+            else {
+              resolve(res)
+            }
+          }
+          catch (error) {
+            reject(error)
+          }
+        })
       }
-      // 失败执行失败回调
       else if (this.status === REJECTED) {
-        const res = failCallback(this.reason)
-        reject(res)
+        setTimeout(() => {
+          try {
+            const res = failCallback(this.reason)
+            if (isPromise(res)) {
+              res.then(resolve, reject)
+            }
+            else {
+              reject(res)
+            }
+          }
+          catch (error) {
+            reject(error)
+          }
+        })
+      }
+      else {
+        this.successCallback.push(() => {
+          setTimeout(() => {
+            const res = successCallback(this.value)
+            if (isPromise(res)) {
+              res.then(resolve, reject)
+            }
+            else {
+              resolve(res)
+            }
+          })
+        })
+        this.failCallback.push(() => {
+          setTimeout(() => {
+            const res = failCallback(this.reason)
+            if (isPromise(res)) {
+              res.then(resolve, reject)
+            }
+            else {
+              reject(res)
+            }
+          })
+        })
       }
     })
     return mp2
   }
+
+  catch(failCallback) {
+    return this.then(undefined, failCallback)
+  }
+
+  finally(callback) {
+    return this.then(callback, callback)
+  }
 }
-// function resolvePromise(mp2, value, resolve, reject) {
-//   if (mp2 === value)
-//     return reject(new TypeError('Chaining cycle detected for promise #<My Promise>'))
-//   return resolve(value)
-// }
+function isPromise(v) {
+  return v instanceof MyPromise
+}
 
 export default MyPromise

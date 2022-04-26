@@ -1,6 +1,6 @@
-const PENDING = 'pending'
-const FULFILLED = 'fulfilled'
-const REJECTED = 'rejected'
+export const PENDING = 'pending'
+export const FULFILLED = 'fulfilled'
+export const REJECTED = 'rejected'
 
 class MyPromise {
   // 当天状态
