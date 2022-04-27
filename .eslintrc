@@ -6,6 +6,14 @@
         "curly": [
             "error",
             "all"
+        ],
+        "no-extend-native": [
+            "error",
+            {
+                "exceptions": [
+                    "Function"
+                ]
+            }
         ]
     },
     "env": {
