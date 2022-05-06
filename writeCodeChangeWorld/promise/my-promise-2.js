@@ -8,9 +8,9 @@ export class MyPromise {
   reason = undefined //  失败原因
   successCallback = [] // 异步成功回调
   failCallback = [] // 异步失败回调
-  constructor(fn) {
+  constructor(executor) {
     try {
-      fn(this.resolve, this.reject)
+      executor(this.resolve, this.reject)
     }
     catch (error) {
       this.reject(error)
@@ -37,7 +37,7 @@ export class MyPromise {
 
   then(
     successCallback = value => value,
-    failCallback = (reason) => { throw reason },
+    failCallback = reason => reason,
   ) {
     const mp2 = new MyPromise((resolve, reject) => {
       if (this.status === FULFILLED) {
@@ -109,6 +109,117 @@ export class MyPromise {
 
   finally(callback) {
     return this.then(callback, callback)
+  }
+
+  static resolve(value) {
+    if (isPromise(value)) { return value }
+    return new MyPromise(resolve => resolve(value))
+  }
+
+  static all(iterable) {
+    return new MyPromise((resolve, reject) => {
+      // 得到的结果数据
+      const result = []
+      let count = 0
+      const addItem = () => {
+        if (++count === iterable.length) {
+          resolve(result)
+        }
+      }
+      for (let index = 0; index < iterable.length; index++) {
+        const currentItem = iterable[index]
+        if (isPromise(currentItem)) {
+          currentItem.then((res) => {
+            result[index] = res
+            addItem()
+          }).catch((err) => {
+            reject(err)
+          })
+        }
+        else {
+          result[index] = currentItem
+          addItem()
+        }
+      }
+    })
+  }
+
+  static allSettled(iterable) {
+    return new MyPromise((resolve, reject) => {
+      try {
+        // 得到的结果数据
+        const result = []
+        let count = 0
+        const addItem = () => {
+          if (++count === iterable.length) {
+            resolve(result)
+          }
+        }
+        for (let index = 0; index < iterable.length; index++) {
+          const currentItem = iterable[index]
+          if (isPromise(currentItem)) {
+            currentItem.then((res) => {
+              result[index] = { status: FULFILLED, value: res }
+              addItem()
+            }).catch((err) => {
+              result[index] = { status: REJECTED, reason: err }
+              addItem()
+            })
+          }
+          else {
+            result[index] = { status: FULFILLED, value: currentItem }
+            addItem()
+          }
+        }
+      }
+      catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  static any(iterable) {
+    return new MyPromise((resolve, reject) => {
+      // 得到的结果数据
+      let count = 0
+      const addItem = () => {
+        if (++count === iterable.length) {
+          reject(new AggregateError('All promises were rejected ', 'All promises were rejected '))
+        }
+      }
+      for (let index = 0; index < iterable.length; index++) {
+        const currentItem = iterable[index]
+        if (isPromise(currentItem)) {
+          currentItem.then((res) => {
+            resolve(res)
+          }).catch(addItem)
+        }
+        else {
+          // 传递的值不是promise
+          resolve(currentItem)
+          break
+        }
+      }
+    })
+  }
+
+  static race(iterable) {
+    return new MyPromise((resolve, reject) => {
+      for (let index = 0; index < iterable.length; index++) {
+        const currentItem = iterable[index]
+        if (isPromise(currentItem)) {
+          currentItem.then((res) => {
+            resolve(res)
+          }).catch((err) => {
+            reject(err)
+          })
+        }
+        else {
+          resolve(currentItem)
+          break
+        }
+      }
+    })
   }
 }
 function isPromise(v) {

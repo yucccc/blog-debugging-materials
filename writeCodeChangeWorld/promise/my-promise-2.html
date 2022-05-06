@@ -1,182 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
+
 <body>
-    <script type="module">
-        import MyPromise from './my-promise-2.js'
-        // import MyPromise from './my-promise.js'
-        // ================> 用法1 基础使用 <=====================
-        // const p1 = new MyPromise((resolve, reject) => {
-        //   console.log('p1')
-        //   resolve('p1')
-        // })
+  <script type="module">
+    import MyPromise from './my-promise-2.js'
+    // import MyPromise from './my-promise.js'
+    // ================> 用法1 基础使用 <=====================
+    // const p1 = new MyPromise((resolve, reject) => {
+    //   console.log('p1')
+    //   resolve('p1')
+    // })
 
-        //   const p1 = new MyPromise((resolve, reject) => {
-        //   console.log('p1')
-        //   resolve('p1')
-        //   reject('p2')
-        //   resolve(1)
-        // })
-        
-        // const p2 = new MyPromise((resolve, reject) => {
-        //   console.log('p2')
-        //   reject(new Error('p2'))
-        // })
+    //   const p1 = new MyPromise((resolve, reject) => {
+    //   console.log('p1')
+    //   resolve('p1')
+    //   reject('p2')
+    //   resolve(1)
+    // })
 
-        // const p3 = p1.then((res) => {
-        //   console.info(`p3 成功 ${res}`)
-        // })
+    // const p2 = new MyPromise((resolve, reject) => {
+    //   console.log('p2')
+    //   reject(new Error('p2'))
+    // })
 
-        // const p4 = p2.then((res) => {
-        //   console.info(`p4 成功 ${res}`)
-        // }, (err) => {
-        //   console.info(`p4 失败 ${err}`)
-        // })
+    // const p3 = p1.then((res) => {
+    //   console.info(`p3 成功 ${res}`)
+    // })
 
-        // const p3_1 = p1.then((res) => {
-        //   console.info(`p3_1 重复then ${res}`)
-        // })
+    // const p4 = p2.then((res) => {
+    //   console.info(`p4 成功 ${res}`)
+    // }, (err) => {
+    //   console.info(`p4 失败 ${err}`)
+    // })
 
-        // const p4_1 = p2.then((res) => {
-        //   console.info(`p4_1 重复then成功 ${res}`)
-        // }, (err) => {
-        //   console.info(`p4_1 重复then失败 ${err}`)
-        // })
+    // const p3_1 = p1.then((res) => {
+    //   console.info(`p3_1 重复then ${res}`)
+    // })
 
-        //  ================> 用法2 异步返回 <=====================
+    // const p4_1 = p2.then((res) => {
+    //   console.info(`p4_1 重复then成功 ${res}`)
+    // }, (err) => {
+    //   console.info(`p4_1 重复then失败 ${err}`)
+    // })
 
-        // const p5 = new MyPromise((resolve) => {
-        //   setTimeout(() => {
-        //     resolve('p5')
-        //   }, 2000)
-        // })
+    //  ================> 用法2 异步返回 <=====================
 
-        // const p6 = new MyPromise((resolve, reject) => {
-        //   setTimeout(() => {
-        //     reject(new Error('p6'))
-        //   }, 1000)
-        // })
+    // const p5 = new MyPromise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve('p5')
+    //   }, 2000)
+    // })
 
-        // const p7 = p5.then((res) => {
-        //   console.info(`p7 异步返回成功 ${res}`)
-        // }, (err) => {
-        //   console.info(`p7 异步返回失败 ${err}`)
-        // })
+    // const p6 = new MyPromise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     reject(new Error('p6'))
+    //   }, 1000)
+    // })
 
-        // const p8 = p6.then((res) => {
-        //   console.info(`p8 异步返回成功 ${res}`)
-        // }, (err) => {
-        //   console.info(`p8 异步返回失败 ${err}`)
-        // })
+    // const p7 = p5.then((res) => {
+    //   console.info(`p7 异步返回成功 ${res}`)
+    // }, (err) => {
+    //   console.info(`p7 异步返回失败 ${err}`)
+    // })
 
-        // ================> 用法3 链式调用 <=====================
+    // const p8 = p6.then((res) => {
+    //   console.info(`p8 异步返回成功 ${res}`)
+    // }, (err) => {
+    //   console.info(`p8 异步返回失败 ${err}`)
+    // })
 
-        // const p5_3_同步 = new MyPromise((resolve) => {
-        //   resolve('p5')
-        // })
+    // ================> 用法3 链式调用 <=====================
 
-        // const p5_循环调用 = p5_3_同步.then(() => {
-        //   return p5_循环调用
-        // }, (error) => {
-        //   console.info(`拦截错误1${error}`)
-        // }).then(() => {}, (error) => {
-        //   console.info(`拦截错误${error}`)
-        // })
+    // const p5_3_同步 = new MyPromise((resolve) => {
+    //   resolve('p5')
+    // })
 
-        // const p5_3_同步_1 = p5_3_同步.then((res) => {
-        //   console.info(`p9 - then 1 同步返回成功 ${res}`)
-        //   return 'p9-then-1'
-        // }).then((res) => {
-        //   console.info(`p9 - then 2 返回 ${res}`)
-        //   return 'p9-then-2'
-        // }).then((res) => {
-        //   console.info(`p9 - then 3 返回 ${res}`)
-        //   throw new Error('p9-then-3')
-        // }).then((res) => {}, (err) => {
-        //   console.info(`拦截到错误${err}`)
-        // })
+    // const p5_循环调用 = p5_3_同步.then(() => {
+    //   return p5_循环调用
+    // }, (error) => {
+    //   console.info(`拦截错误1${error}`)
+    // }).then(() => {}, (error) => {
+    //   console.info(`拦截错误${error}`)
+    // })
 
-        // const p5_3 = new MyPromise((resolve) => {
-        //   setTimeout(() => {
-        //     resolve('p5')
-        //   }, 1000)
-        // })
-        
-        const p6_3 = new MyPromise((resolve, reject) => {
-          setTimeout(() => {
-            reject(new Error('p6'))
-          }, 1000)
-        })
+    // const p5_3_同步_1 = p5_3_同步.then((res) => {
+    //   console.info(`p9 - then 1 同步返回成功 ${res}`)
+    //   return 'p9-then-1'
+    // }).then((res) => {
+    //   console.info(`p9 - then 2 返回 ${res}`)
+    //   return 'p9-then-2'
+    // }).then((res) => {
+    //   console.info(`p9 - then 3 返回 ${res}`)
+    //   throw new Error('p9-then-3')
+    // }).then((res) => {}, (err) => {
+    //   console.info(`拦截到错误${err}`)
+    // })
 
-        // const p9 = p5_3.then((res) => {
-        //   console.info(`p9 - then 1 异步返回成功 ${res}`)
-        //   return 'p9'
-        // }).then((res) => {
-        //   console.info(`p9 - then 2 返回 ${res}`)
-        //   return 'p9-then-2'
-        // }).then((res) => {
-        //   console.info(`p9 - then 3 返回 ${res}`)
-        // })
-        
-        // // 传递空then
-        // const p10 = p5_3.then().then().then().then((res) => {
-        //   console.info(`p10返回 ${res}`)
-        // })
-        // // 链式错误
-        const p11 = p6_3.finally(() => {
-          console.info('fi')
-        }).catch((res) => {
-          console.info('catch', res)
-          return 'catch'
-        }).then((res) => {
-          console.info(`then${res}`)
-        }, (res) => {
-          console.info(`error ${res}`)
-        })
+    // const p5_3 = new MyPromise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve('p5')
+    //   }, 1000)
+    // })
 
-        // //  ✅ 开始就抛出错误
-        // const p12 = new MyPromise((resolve, reject) => {
-        //   throw new Error('p12')
-        // }).then((res) => {
-        //   console.info('p12-success', res)
-        // }, (err) => {
-        //   console.info('p12-❌', err.message)
-        // })
+    // const p6_3 = new MyPromise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     reject(new Error('p6'))
+    //   }, 1000)
+    // })
 
-        // ================> 用法4 返回的是promise <===============
-        // const p13 = new MyPromise((resolve, reject) => {
-        //   resolve('p13')
-        // }).then((res) => {
-        //   console.info('p13-success', res)
-        //   return new MyPromise((resolve) => {
-        //     setTimeout(() => {
-        //       resolve('2s之后返回')
-        //     }, 2000)
-        //   })
-        // }).then((res) => {
-        //   console.info('p13-then-success', res)
-        // })
+    // const p9 = p5_3.then((res) => {
+    //   console.info(`p9 - then 1 异步返回成功 ${res}`)
+    //   return 'p9'
+    // }).then((res) => {
+    //   console.info(`p9 - then 2 返回 ${res}`)
+    //   return 'p9-then-2'
+    // }).then((res) => {
+    //   console.info(`p9 - then 3 返回 ${res}`)
+    // })
 
-        // 用法5 模拟异步
+    // // 传递空then
+    // const p10 = p5_3.then().then().then().then((res) => {
+    //   console.info(`p10返回 ${res}`)
+    // })
+    // // 链式错误
+    // const p11 = p6_3.finally(() => {
+    //   console.info('fi')
+    // }).catch((res) => {
+    //   console.info('catch', res)
+    //   return 'catch'
+    // }).then((res) => {
+    //   console.info(`then${res}`)
+    // }, (res) => {
+    //   console.info(`error ${res}`)
+    // })
 
-        // 用法6 catch
+    // //  ✅ 开始就抛出错误
+    // const p12 = new MyPromise((resolve, reject) => {
+    //   throw new Error('p12')
+    // }).then((res) => {
+    //   console.info('p12-success', res)
+    // }, (err) => {
+    //   console.info('p12-❌', err.message)
+    // })
 
-        // 用法7 finally
+    // ================> 用法4 返回的是promise <===============
+    // const p13 = new MyPromise((resolve, reject) => {
+    //   resolve('p13')
+    // }).then((res) => {
+    //   console.info('p13-success', res)
+    //   return new MyPromise((resolve) => {
+    //     setTimeout(() => {
+    //       resolve('2s之后返回')
+    //     }, 2000)
+    //   })
+    // }).then((res) => {
+    //   console.info('p13-then-success', res)
+    // })
 
-        // 用法8 静态Promise.resolve
+    // ✅ 用法5 模拟异步
 
-        // 用法9 Promise.all
+    // ✅ 用法6 catch
 
-        // 用法10 Promise.allSettled
+    // ✅ 用法7 finally
 
-        // 用法11 Promise.race
+    // ✅  用法8 静态Promise.resolve
+    // console.log('1 start 用法8 静态Promise.resolve ')
+    // const p8 = MyPromise.resolve(new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1000, 'p8成功')
+    // }))
+    // p8.then((res) => {
+    //   console.log('3', res)
+    // })
+    // console.log('2 end 用法8 静态Promise.resolve')
 
-        // 用法12 Promise.any
-        </script>
+    //  ✅  用法9 Promise.all
+
+    // console.log('1 start 用法9 Promise.all')
+    // const pSuc = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1000, '成功pSuc')
+    // })
+    // const pErr = new MyPromise((resolve, reject) => {
+    //   setTimeout(reject, 1200, '失败pErr')
+    // })
+    // const promises = ['1', '2']
+    // const promisesSuccess = ['1', '2', pSuc]
+    // const promisesError = ['1', '2', pErr, pSuc]
+    // MyPromise.all(promises).then((res) => {
+    //   console.info('all1', res)
+    // })
+    // MyPromise.all(promisesSuccess).then((res) => {
+    //   console.info('all2', res)
+    // })
+
+    // MyPromise.all(promisesError).then((res) => {
+    //   console.info('all3', res)
+    // }).catch((err) => {
+    //   console.log(err, '=====> 失败')
+    // })
+
+    // console.log('2 用法9 Promise.all')
+    //  ✅ 用法10 Promise.allSettled
+    // console.log('start 用法10 Promise.allSettled')
+    // const pSuc = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1000, '成功pSuc')
+    // })
+    // const pErr = new MyPromise((resolve, reject) => {
+    //   setTimeout(reject, 1000, '失败pErr')
+    // })
+    // const promises = ['1', '2']
+    // const promisesSuccess = ['1', '2', pSuc]
+    // const promisesError = ['1', '2', pErr]
+
+    // MyPromise.allSettled(promises).then((res) => {
+    //   console.info('all1', res)
+    // })
+    // MyPromise.allSettled(promisesSuccess).then((res) => {
+    //   console.info('all2', res)
+    // })
+
+    // MyPromise.allSettled(promisesError).then((res) => {
+    //   console.info('all3', res)
+    // }).catch((err) => {
+    //   console.log(err, '==err')
+    // })
+
+    // console.log('用法10 Promise.allSettled')
+    // ✅ 用法11 Promise.race
+    console.log('start 用法11 Promise.race')
+
+    const pSuc2 = new MyPromise((resolve) => {
+      setTimeout(resolve, 1100, '成功pSuc2')
+    })
+    const pErr = new MyPromise((resolve, reject) => {
+      setTimeout(reject, 990, '失败pErr')
+    })
+    const pSuc = new MyPromise((resolve) => {
+      setTimeout(resolve, 1000, '成功pSuc1')
+    })
+    const promises = ['1', '2']
+    const promisesSuccess = [pSuc2, pSuc]
+    const promisesError = [pErr, pSuc]
+
+    MyPromise.race(promises).then((res) => {
+      console.info('all1', res)
+    })
+
+    MyPromise.race(promisesSuccess).then((res) => {
+      console.info('all2', res)
+    })
+
+    MyPromise.race(promisesError).then((res) => {
+      console.info('all3', res)
+    }).catch((err) => {
+      console.log(err, '==err')
+    })
+
+    console.log('用法11 Promise.race')
+    // ✅ 用法12 Promise.any
+
+    // console.log('start ---- 用法12 Promise.any')
+    // const pSuc = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1000, '成功pSuc')
+    // })
+    // const pSuc2 = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1100, '成功pSuc2')
+    // })
+    // const pErr = new MyPromise((resolve, reject) => {
+    //   setTimeout(reject, 1000, '失败pErr')
+    // })
+    // const promises = ['1', '2']
+    // const promisesSuccess = [pSuc2, pSuc]
+    // const promisesError = [pErr, pErr]
+
+    // MyPromise.any(promises).then((res) => {
+    //   console.info('all1', res)
+    // })
+    // MyPromise.any(promisesSuccess).then((res) => {
+    //   console.info('all2', res)
+    // })
+
+    // MyPromise.any(promisesError).then((res) => {
+    //   console.info('all3', res)
+    // }).catch((err) => {
+    //   console.log(err.message, '==err')
+    // })
+
+    // console.log('end ---- 用法12 Promise.any')
+  </script>
 </body>
+
 </html>
