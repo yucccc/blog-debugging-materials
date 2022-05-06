@@ -182,28 +182,28 @@
 
     //  ✅  用法9 Promise.all
 
-    // console.log('1 start 用法9 Promise.all')
-    // const pSuc = new MyPromise((resolve) => {
-    //   setTimeout(resolve, 1000, '成功pSuc')
-    // })
-    // const pErr = new MyPromise((resolve, reject) => {
-    //   setTimeout(reject, 1200, '失败pErr')
-    // })
-    // const promises = ['1', '2']
-    // const promisesSuccess = ['1', '2', pSuc]
-    // const promisesError = ['1', '2', pErr, pSuc]
-    // MyPromise.all(promises).then((res) => {
-    //   console.info('all1', res)
-    // })
-    // MyPromise.all(promisesSuccess).then((res) => {
-    //   console.info('all2', res)
-    // })
+    console.log('1 start 用法9 Promise.all')
+    const pSuc = new MyPromise((resolve) => {
+      setTimeout(resolve, 1000, '成功pSuc')
+    })
+    const pErr = new MyPromise((resolve, reject) => {
+      setTimeout(reject, 1200, '失败pErr')
+    })
+    const promises = ['1', '2']
+    const promisesSuccess = ['1', '2', pSuc]
+    const promisesError = ['1', '2', pErr, pSuc]
+    MyPromise.all(promises).then((res) => {
+      console.info('all1', res)
+    })
+    MyPromise.all(promisesSuccess).then((res) => {
+      console.info('all2', res)
+    })
 
-    // MyPromise.all(promisesError).then((res) => {
-    //   console.info('all3', res)
-    // }).catch((err) => {
-    //   console.log(err, '=====> 失败')
-    // })
+    MyPromise.all(promisesError).then((res) => {
+      console.info('all3', res)
+    }).catch((err) => {
+      console.log(err, '=====> 失败')
+    })
 
     // console.log('2 用法9 Promise.all')
     //  ✅ 用法10 Promise.allSettled
@@ -233,36 +233,36 @@
 
     // console.log('用法10 Promise.allSettled')
     // ✅ 用法11 Promise.race
-    console.log('start 用法11 Promise.race')
+    // console.log('start 用法11 Promise.race')
 
-    const pSuc2 = new MyPromise((resolve) => {
-      setTimeout(resolve, 1100, '成功pSuc2')
-    })
-    const pErr = new MyPromise((resolve, reject) => {
-      setTimeout(reject, 990, '失败pErr')
-    })
-    const pSuc = new MyPromise((resolve) => {
-      setTimeout(resolve, 1000, '成功pSuc1')
-    })
-    const promises = ['1', '2']
-    const promisesSuccess = [pSuc2, pSuc]
-    const promisesError = [pErr, pSuc]
+    // const pSuc2 = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1100, '成功pSuc2')
+    // })
+    // const pErr = new MyPromise((resolve, reject) => {
+    //   setTimeout(reject, 990, '失败pErr')
+    // })
+    // const pSuc = new MyPromise((resolve) => {
+    //   setTimeout(resolve, 1000, '成功pSuc1')
+    // })
+    // const promises = ['1', '2']
+    // const promisesSuccess = [pSuc2, pSuc]
+    // const promisesError = [pErr, pSuc]
 
-    MyPromise.race(promises).then((res) => {
-      console.info('all1', res)
-    })
+    // MyPromise.race(promises).then((res) => {
+    //   console.info('all1', res)
+    // })
 
-    MyPromise.race(promisesSuccess).then((res) => {
-      console.info('all2', res)
-    })
+    // MyPromise.race(promisesSuccess).then((res) => {
+    //   console.info('all2', res)
+    // })
 
-    MyPromise.race(promisesError).then((res) => {
-      console.info('all3', res)
-    }).catch((err) => {
-      console.log(err, '==err')
-    })
+    // MyPromise.race(promisesError).then((res) => {
+    //   console.info('all3', res)
+    // }).catch((err) => {
+    //   console.log(err, '==err')
+    // })
 
-    console.log('用法11 Promise.race')
+    // console.log('用法11 Promise.race')
     // ✅ 用法12 Promise.any
 
     // console.log('start ---- 用法12 Promise.any')
