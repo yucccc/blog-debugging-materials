@@ -88,7 +88,6 @@ class MyPromise {
 
   /**
    * 接收一个数组 返回一组promise 如果其中有一个rejected 那么就返回onRejected的值
-   *
    * @param {*} array
    * @returns
    */

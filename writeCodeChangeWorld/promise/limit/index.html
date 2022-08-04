@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>标题</title>
+</head>
+<body>
+    <script  type="module">
+        import { pLimit } from './limit.js'
+        const p = new Promise((resolve) => {
+          setTimeout(resolve, 1000)
+        })
+        pLimit(2, [p, p, p, p, p])
+    </script>
+ 
+</body>
+</html>
